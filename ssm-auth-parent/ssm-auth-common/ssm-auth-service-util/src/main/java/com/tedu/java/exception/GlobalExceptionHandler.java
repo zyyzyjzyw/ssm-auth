@@ -1,9 +1,12 @@
 package com.tedu.java.exception;
 
 import com.tedu.java.result.Result;
+import com.tedu.java.result.ResultCodeEnum;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 
 /**
  * @author： zyy
@@ -32,5 +35,16 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public Result error(OtherException e){
         return Result.fail().code(e.getCode()).message(e.getMsg());
+    }
+
+    /**
+     * spring security异常
+     * @param e
+     * @return
+     */
+    @ExceptionHandler(AccessDeniedException.class)
+    @ResponseBody
+    public Result error(AccessDeniedException e) throws AccessDeniedException {
+        return Result.fail().code(ResultCodeEnum.PERMISSION.getCode()).message("对不起,您没有操作权限");
     }
 }
